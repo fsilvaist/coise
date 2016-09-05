@@ -1,6 +1,7 @@
 var socket = io("http://localhost:3000");
 //var ctx = document.getElementById("ctx").getContext("2d");
 //var p = document.getElementById("p");
+//picas cu
 var i = 0;
 var HEIGHT = 500;
 var WIDTH = 500;
