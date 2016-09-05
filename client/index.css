@@ -1,0 +1,45 @@
+#ctx {
+	border: 1px solid #000000;
+	display: block;
+	margin: 50px auto auto auto;
+}
+form{
+	display: block;
+	margin: 100px auto auto auto;
+	width: 173px;
+
+}
+#login, #register{
+	
+	display: block;
+	margin: auto auto auto auto;
+	width: 173px;
+
+}
+
+#buttonsnake,#buttonsueca, #buttonpoker, #newSnakeGameButton, #buttonHighscoresSnake, #buttonBackToMainMenu{
+	display: block;
+	margin: 100px auto auto auto;
+	width: 173px;
+}
+
+
+
+#username, #logoff{
+	display: block;
+	margin: 10px 10px auto auto;
+	width: 173px;
+}
+
+canvas {
+		display: block;
+		position: absolute;
+		border: 1px solid #000;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		background: #111;
+	}
+	
