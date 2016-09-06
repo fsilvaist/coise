@@ -22,7 +22,8 @@ canvas,	  /* HTMLCanvas */
 ctx,	  /* CanvasRenderingContext2d */
 keystate, /* Object, used for keyboard inputs */
 frames,   /* number, used for animation */
-score;
+score,
+nextDirections = [];
 var highscore = 0;
 var changedDirectionAlready = false;	  /* number, keep track of the player score */
 /**
@@ -161,6 +162,7 @@ function main() {
 	// keeps track of the keybourd input
 	document.addEventListener("keydown", function(evt) {
 		keystate[evt.keyCode] = true;
+		
 	});
 	document.addEventListener("keyup", function(evt) {
 		delete keystate[evt.keyCode];
@@ -199,30 +201,43 @@ function update() {
 	frames++;
 	// changing direction of the snake depending on which keys
 	// that are pressed
-	if (keystate[KEY_LEFT] && snake.direction !== RIGHT 
-			&& changedDirectionAlready === false) {
-		changedDirectionAlready = true;
-		snake.direction = LEFT;
+	if (keystate[KEY_LEFT] && snake.direction !== RIGHT && snake.direction !== LEFT 
+			&& nextDirections.length < 2 ) {
+		nextDirections.push(LEFT);
+	keystate[KEY_LEFT] = false;
+	
+		
 	}
-	if (keystate[KEY_UP] && snake.direction !== DOWN
-			&& changedDirectionAlready === false) {
-		changedDirectionAlready = true;
-		snake.direction = UP;
+	if (keystate[KEY_UP] && snake.direction !== DOWN && snake.direction !== UP
+			&& nextDirections.length < 2) {
+		nextDirections.push(UP);
+	keystate[KEY_UP] = false;
+		
 	}
-	if (keystate[KEY_RIGHT] && snake.direction !== LEFT
-			&& changedDirectionAlready === false) {
-		changedDirectionAlready = true;
-		snake.direction = RIGHT;
+	if (keystate[KEY_RIGHT] && snake.direction !== LEFT && snake.direction !== RIGHT
+			&& nextDirections.length < 2) {
+		nextDirections.push(RIGHT);
+	keystate[KEY_RIGHT] = false;
+		
 	}
-	if (keystate[KEY_DOWN] && snake.direction !== UP
-			&& changedDirectionAlready === false) {
-		changedDirectionAlready = true;
-		snake.direction = DOWN;
+	if (keystate[KEY_DOWN] && snake.direction !== UP && snake.direction !== DOWN
+			&& nextDirections.length < 2) {
+		nextDirections.push(DOWN);
+	keystate[KEY_DOWN] = false;
+		
 	}
+		
+	if(nextDirections.length > 0 && changedDirectionAlready === false){
+	snake.direction = nextDirections[0];
+	changedDirectionAlready = true;
+	nextDirections.shift(); 
+	}
+
 	var speed = 0;
 	
 	if(speed < 8){
 		speed = Math.floor(score/5);
+
 	}
 	else{
 		speed = 8;
@@ -231,7 +246,6 @@ function update() {
 	if (frames%(10-speed) === 0) {
 		// pop the last element from the snake queue i.e. the
 		// head
-		changedDirectionAlready = false;
 		var nx = snake.last.x;
 		var ny = snake.last.y;
 		// updates the position depending on the snake direction
@@ -249,6 +263,8 @@ function update() {
 				ny++;
 				break;
 		}
+				changedDirectionAlready = false;
+
 		// checks all gameover conditions
 		if (0 > nx || nx > grid.width-1  ||
 			0 > ny || ny > grid.height-1 ||
