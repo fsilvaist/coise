@@ -10,23 +10,22 @@
              db.createCollection("userpws");
 ```
 - (OPTIONAL) 
-  If you to populate the database use the following cmd:
-            ```
+If you to populate the database use the following cmd:
+```
                 db.userpws.insert({username:"nyo", password:"lol123"});
-            ```
-  This will find a record with the username = "nyo"
-             ```
+```
+This will find a record with the username = "nyo"
+```
                  db.userpws.find({username:"nyo"});
-             ```
-  This will find a record with the username = "nyo" and password="lol123"
-             ```
+```
+This will find a record with the username = "nyo" and password="lol123"
+ ```
                  db.userpws.find({username:"nyo", password:"lol123"});
-             ```
-  This will do the as the previous query but only shows the username field
-             ```   
+```
+This will do the as the previous query but only shows the username field
+ ```   
                 db.userpws.find({username:"nyo", password:"lol123"}, {username:1});
-             ```
-                
+```
                 
 - Clone the project
 - Open a terminal and go the directory of the project
