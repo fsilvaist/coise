@@ -56,27 +56,50 @@ createLoginMenu = function(){
 
 
 login = function(){
-	var user = document.getElementById("usernameform");
-	var pw = document.getElementById("passwordform");
+	var userform = document.getElementById("usernameform");
+	var pwform = document.getElementById("passwordform");
 	
-	username = user.value;
-	password = pw.value;
-	console.log("USERNAME:" + username);
+	socket.emit("login", {username:userform.value, password:pwform.value});
+	username = userform.value;
 	
-	var body = document.getElementById("body");
-	var form = document.getElementById("form");
-	var loginbutton = document.getElementById("login");
-	var registerbutton = document.getElementById("register");
-	body.removeChild(form);
-	body.removeChild(loginbutton);
-	body.removeChild(registerbutton);
-	//parent.removeChild(child);
+	socket.on("loginResponse", function(data){
+		if(data.success){
+			//LOGIN SUCCESSFUL
+			
+			console.log("LOGIN SUCCESSFUL");
+			
+			// var body = document.getElementById("body");
+			// var form = document.getElementById("form");
+			// var loginbutton = document.getElementById("login");
+			// var registerbutton = document.getElementById("register");
+			// body.removeChild(form);
+			// body.removeChild(loginbutton);
+			// body.removeChild(registerbutton);
+			
+			var items = document.body.getElementsByTagName("*");
+			for (var i = items.length - 1; i >= 0; i--) {
+				if(!(items[i].tagName === "SCRIPT")){
+					items[i].parentNode.removeChild(items[i]);
+				}
+			}
+			//parent.removeChild(child);
+			
+			setUserAndLogOffButton();
+			
+			setCookie("username", username, 1);
+			console.log("COOKIE: ||" + getCookie("username") + "||");
+			createMenu();
+			}
+		else{
+		
+			//LOGIN UNSUCCESSFUL
+			console.log("LOGIN UNSUCCESSFUL");
+			}
+			
+	});
 	
-	setUserAndLogOffButton();
 	
-	setCookie("username", username, 1);
-	console.log("COOKIE: ||" + getCookie("username") + "||");
-	createMenu();
+	
 }
 
 setUserAndLogOffButton = function(){
@@ -102,9 +125,9 @@ logoff = function(){
 	setCookie("username", "", 0);
 	//delete cookie
 	var items = document.body.getElementsByTagName("*");
-    for (var i = items.length - 1; i >= 0; i--) {
-        if(!(items[i].tagName === "SCRIPT")){
-			document.body.removeChild(items[i]);
+	for (var i = items.length - 1; i >= 0; i--) {
+		if(!(items[i].tagName === "SCRIPT")){
+			items[i].parentNode.removeChild(items[i]);
 		}
 	}
 	
@@ -146,16 +169,31 @@ createMenu = function(){
 register = function(){
 	var userform = document.getElementById("usernameform");
 	var pwform = document.getElementById("passwordform");
-	var user = userform.value;
-	var pw = pwform.value;
-	if(!registeredUsers.hasOwnProperty(user)){
-		registeredUsers[user] = pw;
-		alert("REGIST SUCCESSFUL");
-	}
-	else{
-		console.log("USERNAME ALREADY IN USE " + registeredUsers[user]);
-		alert("USERNAME ALREADY IN USER - REGIST SUCCESSFUL");
-	}
+	
+	socket.emit("register", {username:userform.value, password:pwform.value});
+	
+	
+	socket.on("registerResponse", function(data){
+		if(data.success){
+			//REGIST SUCCESSFUL
+			
+			console.log("REGIST SUCCESSFUL");
+			}
+		else{
+		
+			//REGIST UNSUCCESSFUL
+			console.log("REGIST UNSUCCESSFUL");
+			}
+			
+	});
+	// if(!registeredUsers.hasOwnProperty(user)){
+		// registeredUsers[user] = pw;
+		// alert("REGIST SUCCESSFUL");
+	// }
+	// else{
+		// console.log("USERNAME ALREADY IN USE " + registeredUsers[user]);
+		// alert("USERNAME ALREADY IN USER - REGIST SUCCESSFUL");
+	// }
 	
 //registar user na db
 //etc etc
