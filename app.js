@@ -12,8 +12,7 @@ var HEIGHT = 500;
 var WIDTH = 500;
 
 var clients = {};
-var registeredUsers = {
-	"nyo":"lol123"};
+
 	
 	
 isValidPassword = function(data, cb){
@@ -53,70 +52,25 @@ io.on("connection", function(socket) {
 		isUsernameTaken(data, function(res){
 			if(res)
 				socket.emit("registerResponse", {success:false});
-			else
-				socket.emit("registerResponse", {success:true});
+			else{
+				addUser(data,function(){
+					socket.emit("registerResponse", {success:true});				
+				});
+			}
 		});
 	});
 	
 	
 	socket.on("login", function(data){
-		if(registeredUsers.hasOwnProperty(data.username) &&
-				registeredUsers[data.username] === data.password){
-			registeredUsers[data.username] = data.password;
-			socket.emit("loginResponse", {success:true});
-		}
-		else
-			socket.emit("loginResponse", {success:false});
+	
+	
+		isValidPassword(data,function(res){
+			if(res)
+				socket.emit('loginResponse',{success:true});
+			else
+				socket.emit('loginResponse',{success:false});			
+		});
 	});
 		
-		
-		
-		
+			
 });
-	// console.log("NEW CLIENT: " + socket.id);
-	// socket.emit("idmsg", socket.id);
-
-	// var x = Math.floor(Math.random() * HEIGHT);
-    // var y = Math.floor(Math.random() * WIDTH);
-
-	// var pos = {
-            // posX: x,
-            // posY: y,
-            // };
-
-          
-    
-    // for(var c in clients){
-        // socket.emit("enemy", c, clients[c]["posX"], clients[c]["posY"]);
-    // }
-    // clients[socket.id] = pos;  
-    // socket.emit("init", x, y);
-    // socket.on("newPos", function(x, y){
-    	// clients[socket.id].posX = x;
-    	// clients[socket.id].posY = y;
-    	// for(var c in clients){
-    			// io.sockets.emit("refreshPlayers", c, clients[c].posX, clients[c].posY);
-    		// }
-    // });
-
-    // socket.broadcast.emit("enemy", socket.id, x, y);
-
-    // socket.on("disconnect", function(){
-        // socket.broadcast.emit("playerexit", socket.id);
-        // delete clients[socket.id];
-
-    // });
-
-    
-	// socket.broadcast.emit
-
-
-/*
-setInterval(
-    	function(){
-    		for(var c in clients){
-    			io.sockets.emit("refreshPlayers", c, clients[c].posX, clients[c].posY);
-    		}	
-    	}
-    , 50);
-*/

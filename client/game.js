@@ -125,11 +125,11 @@ logoff = function(){
 	setCookie("username", "", 0);
 	//delete cookie
 	var items = document.body.getElementsByTagName("*");
-	for (var i = items.length - 1; i >= 0; i--) {
-		if(!(items[i].tagName === "SCRIPT")){
-			items[i].parentNode.removeChild(items[i]);
+		for (var i = items.length - 1; i >= 0; i--) {
+			if(!(items[i].tagName === "SCRIPT")){
+				items[i].parentNode.removeChild(items[i]);
+			}
 		}
-	}
 	
 	createLoginMenu();
 
