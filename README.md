@@ -1,8 +1,8 @@
-# coise
+# Cheiraamaçã
 
 ## Instructions:
 - Download and install mongodb from https://www.mongodb.com/download-center?jmp=nav#community
-- On a terminal go to C:\Program Files\MongoDB\Server\3.2\bin and start running mongod (just write "mongod", press enter and let it run in the backgroud.
+- On a terminal go to C:\Program Files\MongoDB\Server\3.2\bin and start running mongod (just write "mongod", press enter and let it run in the backgroud).
 - On another terminal go to the previous location and start running mongo
 - Create the database used in this project:
 ```
