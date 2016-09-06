@@ -12,8 +12,6 @@ var HEIGHT = 500;
 var WIDTH = 500;
 
 var clients = {};
-
-	
 	
 isValidPassword = function(data, cb){
 	
