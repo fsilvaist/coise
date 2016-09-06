@@ -8,11 +8,13 @@
 ```
              use simpleGamesDB;
              db.createCollection("userpws");
+             db.createCollection("snakescores");
 ```
 - (OPTIONAL) 
 If you to populate the database use the following cmd:
 ```
                 db.userpws.insert({username:"nyo", password:"lol123"});
+                db.userpws.insert({username:"nyo", score:0});
 ```
 This will find a record with the username = "nyo"
 ```
