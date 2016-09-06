@@ -24,8 +24,10 @@ keystate, /* Object, used for keyboard inputs */
 frames,   /* number, used for animation */
 score,
 nextDirections = [];
-var highscore = 0;
-var changedDirectionAlready = false;	  /* number, keep track of the player score */
+var highscore;
+var changedDirectionAlready = false;
+var highscorechanged;
+var speed;	  /* number, keep track of the player score */
 /**
  * Grid datastructor, usefull in games where the game world is
  * confined in absolute sized chunks of data or information.
@@ -169,14 +171,27 @@ function main() {
 	});
 	
 	// intatiate game objects and starts the game loop
+	
+	socket.emit("highscoreSnake", {username:username});
+	
+	socket.on("highscoreSnakeResponse", function(data){
+		if(data.success)
+			highscore = data.score;
+		else
+			highscore = 0;
+	});
+	inGame = true;
 	init();
 	loop();
 }
 /**
  * Resets and inits game objects
  */
+ 
 function init() {
 	score = 0;
+	speed = 0;
+	highscorechanged = false;
 	grid.init(EMPTY, COLS, ROWS);
 	var sp = {x:Math.floor(COLS/2), y:ROWS-1};
 	snake.init(UP, sp.x, sp.y);
@@ -192,7 +207,9 @@ function loop() {
 	draw();
 	// When ready to redraw the canvas call the loop function
 	// first. Runs about 60 frames a second
-	window.requestAnimationFrame(loop, canvas);
+	if(inGame){
+		window.requestAnimationFrame(loop, canvas);
+	}
 }
 /**
  * Updates the game logic
@@ -270,8 +287,6 @@ function update() {
 	nextDirections.shift(); 
 	}
 
-	var speed = 0;
-	
 	if(speed < 8){
 		speed = Math.floor(score/5);
 
@@ -307,6 +322,18 @@ function update() {
 			0 > ny || ny > grid.height-1 ||
 			grid.get(nx, ny) === SNAKE
 		) {
+			
+			if(highscorechanged){
+				
+				socket.emit("newHighscore", {username:username, highscore:highscore});
+				socket.on("newHighscoreResponse", function(data){
+					//data.success
+					return init();
+					});
+				
+			}
+		
+		
 			return init();
 		}
 		// check wheter the new position are on the fruit item
@@ -315,6 +342,7 @@ function update() {
 			score++;
 			// increment the score and sets a new fruit position
 			if (score > highscore){
+				highscorechanged = true;
 				highscore = score;
 			}
 			setFood();

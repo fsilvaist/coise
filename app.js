@@ -1,5 +1,5 @@
 var mongojs = require("mongojs");
-var db = mongojs("localhost:27017/simpleGamesDB", ["userpws"]);
+var db = mongojs("localhost:27017/simpleGamesDB", ["userpws", "snakescores"]);
 var express = require("express");
 var http = require("http");
 var app = express();
@@ -38,12 +38,33 @@ isUsernameTaken = function(data, cb){
 addUser = function(data, cb){
 	
 	db.userpws.insert({username:data.username, password:data.password}, function(err){
-		cb();
+		db.snakescores.insert({username:data.username, score:0}, function(err){
+			cb();
+		});
 	});
 
 };
+
+updateHighscore = function(data, cb){
+	db.snakescores.update({username:data.username}, {$set: {score:data.highscore}}, function(err){
+		console.log("Score of " + data.username + " updated to " + data.highscore);
+		cb();
+	});
+};
 	
 
+retrieveHighscore = function(data, cb){
+	
+	db.snakescores.find({username:data.username}, {_id: 0, score: 1} , function(err, res){
+		if(res.length > 0)
+			cb(true, res[0].score);
+		else
+			cb(false, 0);
+	});
+
+};
+
+	
 io.on("connection", function(socket) {
 
 	socket.on("register", function(data){
@@ -67,6 +88,30 @@ io.on("connection", function(socket) {
 				socket.emit('loginResponse',{success:true});
 			else
 				socket.emit('loginResponse',{success:false});			
+		});
+	});
+	
+	
+	socket.on("highscoreSnake", function(data){
+	
+	
+		retrieveHighscore(data,function(ok, res){
+			if(ok)
+				socket.emit('highscoreSnakeResponse',{success:true, score:res});
+			else
+				socket.emit('highscoreSnakeResponse',{success:false, score:0});			
+		});
+	});
+	
+	
+	socket.on("newHighscore", function(data){
+		
+		updateHighscore(data,function(){
+			//if()
+				socket.emit('newHighscoreResponse',{success:true});
+			// else
+				// socket.emit('newHighscoreResponse',{success:false});
+							
 		});
 	});
 		
