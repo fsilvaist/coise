@@ -203,26 +203,63 @@ function update() {
 	// that are pressed
 	if (keystate[KEY_LEFT] && snake.direction !== RIGHT && snake.direction !== LEFT 
 			&& nextDirections.length < 2 ) {
-		nextDirections.push(LEFT);
+		if(nextDirections.length === 1){
+			if(nextDirections[0] === RIGHT){
+
+			}else{
+				nextDirections.push(LEFT);
+			}
+		}
+		if(nextDirections.length === 0){
+			nextDirections.push(LEFT);
+		}
 	keystate[KEY_LEFT] = false;
 	
 		
 	}
 	if (keystate[KEY_UP] && snake.direction !== DOWN && snake.direction !== UP
 			&& nextDirections.length < 2) {
-		nextDirections.push(UP);
+		if(nextDirections.length === 1){
+			if(nextDirections[0] === DOWN){
+
+			}else{
+				nextDirections.push(UP);
+			}
+		}
+		if(nextDirections.length === 0){
+			nextDirections.push(UP);
+		}
+		
 	keystate[KEY_UP] = false;
 		
 	}
 	if (keystate[KEY_RIGHT] && snake.direction !== LEFT && snake.direction !== RIGHT
 			&& nextDirections.length < 2) {
-		nextDirections.push(RIGHT);
+		if(nextDirections.length === 1){
+			if(nextDirections[0] === LEFT){
+
+			}else{
+				nextDirections.push(RIGHT);
+			}
+		}
+		if(nextDirections.length === 0){
+			nextDirections.push(RIGHT);
+		}
 	keystate[KEY_RIGHT] = false;
 		
 	}
 	if (keystate[KEY_DOWN] && snake.direction !== UP && snake.direction !== DOWN
 			&& nextDirections.length < 2) {
-		nextDirections.push(DOWN);
+		if(nextDirections.length === 1){
+			if(nextDirections[0] === UP){
+
+			}else{
+				nextDirections.push(DOWN);
+			}
+		}
+		if(nextDirections.length === 0){
+			nextDirections.push(DOWN);
+		}
 	keystate[KEY_DOWN] = false;
 		
 	}
