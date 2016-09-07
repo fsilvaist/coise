@@ -216,7 +216,6 @@ snakemenu = function(){
 	buttonHighscoresSnake.setAttribute("type", "button");
 	buttonHighscoresSnake.setAttribute("onclick", "highscoresSnake()");
 	buttonHighscoresSnake.innerHTML = "HIGHSCORES";
-	buttonHighscoresSnake.disabled = true;
 	body.appendChild(buttonHighscoresSnake);
 	
 	var buttonBackToMainMenu = document.createElement("button");
@@ -231,6 +230,81 @@ snakemenu = function(){
 	
 	console.log("snakemenu");
 }
+
+
+socket.on("highscoresMenuSnakeResponse", function(data){
+	
+		console.log("TAM DATA: " + data.length);
+		
+		for(var i=0; i < data.length ; i++){
+			var p;
+			p = document.createElement("p");
+			p.innerHTML = data[i].username + " : " + data[i].score;
+			document.body.appendChild(p);
+		}
+		
+		var buttonPreviousMenu = document.createElement("button");
+		buttonPreviousMenu.setAttribute("id", "buttonPreviousMenuButton");
+		buttonPreviousMenu.setAttribute("type", "button");
+		buttonPreviousMenu.setAttribute("onclick", "buttonPreviousMenu()");
+		buttonPreviousMenu.innerHTML = "BACK";
+		document.body.appendChild(buttonPreviousMenu);
+			//data is an ordered array
+	});
+
+highscoresSnake = function(){
+	
+	console.log("OI");
+	var b1 = document.getElementById("newSnakeGameButton");
+	var b2 = document.getElementById("buttonHighscoresSnake");
+	var b3 = document.getElementById("buttonBackToMainMenu");
+	
+	document.body.removeChild(b1);
+	document.body.removeChild(b2);
+	document.body.removeChild(b3);
+	
+	socket.emit("highscoresMenuSnake");
+	
+
+}
+
+buttonPreviousMenu = function(){
+	
+	var items = document.body.getElementsByTagName("*");
+		for (var i = items.length - 1; i >= 0; i--) {
+			console.log(items[i].tagName);
+			if(items[i].tagName === "P"){
+				items[i].parentNode.removeChild(items[i]);
+			}
+		}
+		
+	var b1 = document.getElementById("buttonPreviousMenuButton");
+	document.body.removeChild(b1);
+	
+	var buttonNewSnakeGame = document.createElement("button");
+	buttonNewSnakeGame.setAttribute("id", "newSnakeGameButton");
+	buttonNewSnakeGame.setAttribute("type", "button");
+	buttonNewSnakeGame.setAttribute("onclick", "newSnakeGame()");
+	buttonNewSnakeGame.innerHTML = "NEW GAME";
+	body.appendChild(buttonNewSnakeGame);
+	
+	var buttonHighscoresSnake = document.createElement("button");
+	buttonHighscoresSnake.setAttribute("id", "buttonHighscoresSnake");
+	buttonHighscoresSnake.setAttribute("type", "button");
+	buttonHighscoresSnake.setAttribute("onclick", "highscoresSnake()");
+	buttonHighscoresSnake.innerHTML = "HIGHSCORES";
+	body.appendChild(buttonHighscoresSnake);
+	
+	var buttonBackToMainMenu = document.createElement("button");
+	buttonBackToMainMenu.setAttribute("id", "buttonBackToMainMenu");
+	buttonBackToMainMenu.setAttribute("type", "button");
+	buttonBackToMainMenu.setAttribute("onclick", "backToMainMenu()");
+	buttonBackToMainMenu.innerHTML = "BACK TO MAIN MENU";
+	body.appendChild(buttonBackToMainMenu);
+
+}
+
+
 
 newSnakeGame = function(){
 

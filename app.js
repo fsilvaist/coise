@@ -64,6 +64,17 @@ retrieveHighscore = function(data, cb){
 
 };
 
+
+getHighscoresSnake = function(cb){
+	db.snakescores.find({},{_id: 0, username:1, score: 1}).limit(10).sort({score: -1}, function (err, docs) {
+		console.dir(docs);
+		
+		cb(docs);
+	});
+	
+
+};
+
 	
 io.on("connection", function(socket) {
 
@@ -94,7 +105,7 @@ io.on("connection", function(socket) {
 	
 	socket.on("highscoreSnake", function(data){
 	
-	
+		
 		retrieveHighscore(data,function(ok, res){
 			if(ok)
 				socket.emit('highscoreSnakeResponse',{success:true, score:res});
@@ -115,5 +126,13 @@ io.on("connection", function(socket) {
 		});
 	});
 		
+	socket.on("highscoresMenuSnake", function(){
+		console.log("OI");
+		getHighscoresSnake(function(data){
+			console.log("enviei resposta");
+			socket.emit("highscoresMenuSnakeResponse", data);
+		});
+	
+	});
 			
 });

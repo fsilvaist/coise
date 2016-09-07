@@ -17,10 +17,15 @@ form{
 
 }
 
-#buttonsnake,#buttonsueca, #buttonpoker, #newSnakeGameButton, #buttonHighscoresSnake, #buttonBackToMainMenu{
+#buttonsnake,#buttonsueca, #buttonpoker, #newSnakeGameButton, #buttonHighscoresSnake, #buttonBackToMainMenu, p{
 	display: block;
 	margin: 100px auto auto auto;
 	width: 173px;
+}
+p, #buttonPreviousMenuButton{
+	display: block;
+	margin: 25px auto auto auto;
+	width: 150px;
 }
 
 
